@@ -24,7 +24,7 @@ grep with the appropriate regex revealed the hashed password
 
 ![A picture containing graphical user interface Description
 automatically
-generated]
+generated](media/image2.png)
 
 Great!! We can now try crack it?
 
