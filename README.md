@@ -18,7 +18,7 @@ Moving forward the uncompressed version will be used.
 Next step: find out the volatility profile that suits it. Big failure:
 volatility2 doesn't find any matching profile and volatility3 says no
 matching symbol table is found. Few greps in the memory reveal there
-were some sudo commands run inside and possibly a password prompt was
+were some sudo commands ran inside and possibly a password prompt was
 satisfied by the user but no further info about the password. Another
 grep with the appropriate regex revealed the hashed password
 (/etc/shadow content) of the user bighero:
@@ -32,8 +32,7 @@ Great!! We can now try crack it?
 ![Graphical user interface, text Description automatically
 generated](media/image3.png)
 
-![](media/image4.png){width="6.5in"
-height="0.7208333333333333in"}
+![](media/image4.png)
 
 Yes, you read right: 2 days, 7 hours, 50 mins and 36 secs later still
 not cracked... Wrong approach.
@@ -41,13 +40,12 @@ not cracked... Wrong approach.
 Why not go back to volatility and make it work? Profile building from
 scratch can be helpful but how to know the suitable OS and kernel? Since
 we have the disk image, we can browse through the files with AccessData
-FTK Imager and print the /etc/issue file
+FTK Imager and print the `/etc/issue file`
 
 ![Graphical user interface, application, table Description automatically
 generated](media/image5.png)
 
-I went ahead and spawned a Linux Mint 20.3 VM, built a profile, added it
-to volatility
+I went ahead and spawned a Linux Mint 20.3 VM, built a profile, added it to volatility
 
 ![Text Description automatically
 generated](media/image6.png)
@@ -65,8 +63,8 @@ confidence](media/image7.png)
 I considered the first two results and started to look for the ISO of
 ubuntu 20.04
 
-I went for a 20.04.4 image I found on the internet but quickly figured
-out I was very wrong since the banner precisely stated 20.04.1. I
+I went for a `20.04.4` image I found on the internet but quickly figured
+out I was very wrong since the banner precisely stated `20.04.1`. I
 quickly went back to get the right image at [this
 URL](http://old-releases.ubuntu.com/releases/20.04.1/ubuntu-20.04.1-desktop-amd64.iso)
 
@@ -100,10 +98,10 @@ generated](media/image11.png)
 Now I can find the needed vmlinux file at
 /usr/lib/debug/boot/vmlinux-5-4-0-113-generic
 
-I then build the symbol table with ./dwarf2json --elf
+I then build the symbol table with `./dwarf2json --elf
 /usr/lib/debug/boot/vmlinux-5-4-0-113-generic --system-map
-/boot/System.map-5.4.0-113-generic \| xz -c
-Ubuntu20.04x64-5.4.0-113-generic.json.xz
+/boot/System.map-5.4.0-113-generic | xz -c
+Ubuntu20.04x64-5.4.0-113-generic.json.xz`
 
 (This crashed several times and after a lot of googling I read that the
 process was actually killed by the OS because of insufficient memory and
@@ -125,7 +123,7 @@ looked closely at running processes with linux_psaux.
 generated](media/image12.png)
 
 In the first place I thought of inspecting sudo but few
-[researches](https://bugzilla.gnome.org/show_bug.cgi?id=764014) brought
+[research](https://bugzilla.gnome.org/show_bug.cgi?id=764014) brought
 to my attention that gnome keyring daemon stores cleartext passwords in
 memory and fortunately it was running in our memory image.
 
@@ -141,7 +139,7 @@ generated](media/image13.png)
 Description automatically
 generated](media/image14.png)
 
-So, I go back to my memory image and look closely to the keyring daemon:
+So, I went back to my memory image and looked closely to the keyring daemon:
 
 ![A screenshot of a computer Description automatically
 generated](media/image15.png)
@@ -179,11 +177,11 @@ which one of those maps' file it is.
 ![A picture containing text Description automatically
 generated](media/image19.png)
 
-It turned out to be the 142^nd^ mem map out of the 152 mem maps of the
+It turned out to be the $142^nd$ mem map out of the 152 mem maps of the
 gnome-keyring-d process.
 
 Now I go back to the challenge VM and after dumping all its
-gnome-keyring-d's 152 memmaps to a directory, I cat the 142^nd^ in the
+gnome-keyring-d's 152 memmaps to a directory, I cat the $142^nd$ in the
 list.
 
 ![](media/image20.png)
@@ -194,7 +192,7 @@ confidence](media/image21.png)
 ![Text Description automatically generated with medium
 confidence](media/image22.png)
 
-(The 142^nd^ highlighted)
+(The $142^nd$  highlighted)
 
 Now I cat the corresponding file using the start offset value
 
