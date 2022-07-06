@@ -5,8 +5,7 @@
 Challenge: You shall pass!
 
 ![Graphical user interface, application Description automatically
-generated](media/image1.png){width="4.11515748031496in"
-height="2.354494750656168in"}
+generated](media/image1.png)
 
 Given the compressed memory dump the first step was obviously to
 uncompress it:
@@ -26,14 +25,12 @@ grep with the appropriate regex revealed the hashed password
 
 ![A picture containing graphical user interface Description
 automatically
-generated](media/image2.png){width="6.5in"
-height="1.6375in"}
+generated]
 
 Great!! We can now try crack it?
 
 ![Graphical user interface, text Description automatically
-generated](media/image3.png){width="6.5in"
-height="2.6979166666666665in"}
+generated](media/image3.png)
 
 ![](media/image4.png){width="6.5in"
 height="0.7208333333333333in"}
@@ -47,15 +44,13 @@ we have the disk image, we can browse through the files with AccessData
 FTK Imager and print the /etc/issue file
 
 ![Graphical user interface, application, table Description automatically
-generated](media/image5.png){width="6.5in"
-height="3.5527777777777776in"}
+generated](media/image5.png)
 
 I went ahead and spawned a Linux Mint 20.3 VM, built a profile, added it
 to volatility
 
 ![Text Description automatically
-generated](media/image6.png){width="6.5in"
-height="1.3493055555555555in"}
+generated](media/image6.png)
 
 Still not accepting this profile
 
@@ -65,8 +60,7 @@ use. I then did so:
 
 ![A computer screen capture Description automatically generated with
 medium
-confidence](media/image7.png){width="6.5in"
-height="1.0611111111111111in"}
+confidence](media/image7.png)
 
 I considered the first two results and started to look for the ISO of
 ubuntu 20.04
@@ -79,23 +73,20 @@ URL](http://old-releases.ubuntu.com/releases/20.04.1/ubuntu-20.04.1-desktop-amd6
 I then installed it in my VirtualBox to proceed Only to figure out it's
 kernel still doesn't match the one in the banner.
 
-![](media/image8.png){width="6.5in"
-height="0.6708333333333333in"}
+![](media/image8.png)
 
 I need a 5.4.0-113-generic !!
 
 I decided to manually add a second kernel.
 
 ![Text Description automatically
-generated](media/image9.png){width="6.5in"
-height="0.9256944444444445in"}
+generated](media/image9.png)
 
 Now rebooting I go to "Advanced options" in the GRUB and find my second
 brand new (and suitable) kernel
 
 ![Text Description automatically
-generated](media/image10.png){width="6.480071084864392in"
-height="1.9586067366579178in"}
+generated](media/image10.png)
 
 I can go ahead and build the volatility3 symbol table and also
 volatility2 profile (you never know haha)
@@ -104,8 +95,7 @@ The symbol table generation required the kernel's debug symbols (not the
 compressed vmlinuz available in /boot/) so I had to install those (6GB)
 
 ![Text Description automatically
-generated](media/image11.png){width="6.5in"
-height="2.5027777777777778in"}
+generated](media/image11.png)
 
 Now I can find the needed vmlinux file at
 /usr/lib/debug/boot/vmlinux-5-4-0-113-generic
@@ -132,8 +122,7 @@ to see if some password comes out but none of them gave results. Then I
 looked closely at running processes with linux_psaux.
 
 ![Text Description automatically
-generated](media/image12.png){width="6.5in"
-height="2.792361111111111in"}
+generated](media/image12.png)
 
 In the first place I thought of inspecting sudo but few
 [researches](https://bugzilla.gnome.org/show_bug.cgi?id=764014) brought
@@ -147,25 +136,22 @@ gnome seahorse to display the content but as you can imagine it wasn't
 that simple.
 
 ![Graphical user interface, application Description automatically
-generated](media/image13.png){width="2.991304680664917in"
-height="2.496088145231846in"} ![Graphical user interface, application
+generated](media/image13.png)
+![Graphical user interface, application
 Description automatically
-generated](media/image14.png){width="3.226087051618548in"
-height="2.190686789151356in"}
+generated](media/image14.png)
 
 So, I go back to my memory image and look closely to the keyring daemon:
 
 ![A screenshot of a computer Description automatically
-generated](media/image15.png){width="6.5in"
-height="1.1604166666666667in"}
+generated](media/image15.png)
 
 Pid: 1339
 
 I decide to list its memory maps using linux_proc_maps
 
 ![Text Description automatically
-generated](media/image16.png){width="6.5in"
-height="1.9951388888888888in"}
+generated](media/image16.png)
 
 152 memory maps in total for that process (good luck in digging into all
 of them looking for the password)
@@ -178,23 +164,20 @@ After the dump realized I used linux_dump_map to dump all memory maps of
 the process gnome-keyring-daemon
 
 ![Graphical user interface, text Description automatically
-generated](media/image17.png){width="6.5in"
-height="0.98125in"}
+generated](media/image17.png)
 
 Then I grep in all the generated process map files to find out which one
 contained my password on that clone VM. (My password was 'zere-iz')
 
 ![A picture containing graphical user interface Description
 automatically
-generated](media/image18.png){width="6.5in"
-height="0.9895833333333334in"}
+generated](media/image18.png)
 
 From the .vma file name I could look in the process maps and find out
 which one of those maps' file it is.
 
 ![A picture containing text Description automatically
-generated](media/image19.png){width="6.5in"
-height="2.0319444444444446in"}
+generated](media/image19.png)
 
 It turned out to be the 142^nd^ mem map out of the 152 mem maps of the
 gnome-keyring-d process.
@@ -203,23 +186,19 @@ Now I go back to the challenge VM and after dumping all its
 gnome-keyring-d's 152 memmaps to a directory, I cat the 142^nd^ in the
 list.
 
-![](media/image20.png){width="6.5in"
-height="0.3034722222222222in"}
+![](media/image20.png)
 
 ![A computer screen capture Description automatically generated with low
-confidence](media/image21.png){width="6.5in"
-height="2.2506944444444446in"}
+confidence](media/image21.png)
 
 ![Text Description automatically generated with medium
-confidence](media/image22.png){width="6.5in"
-height="1.8652777777777778in"}
+confidence](media/image22.png)
 
 (The 142^nd^ highlighted)
 
 Now I cat the corresponding file using the start offset value
 
-![](media/image23.png){width="6.5in"
-height="0.5138888888888888in"}
+![](media/image23.png)
 
 I can see the password printed in clear text all over the place!!!
 
