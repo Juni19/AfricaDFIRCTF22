@@ -10,8 +10,8 @@ generated](media/image1.png)
 Given the compressed memory dump the first step was obviously to
 uncompress it:
 
-sudo ./avml-convert /mnt/vm-shared/14257525-E001-MEM/E001.lime.snappy
-E001.lime.snappy
+`sudo ./avml-convert /mnt/vm-shared/14257525-E001-MEM/E001.lime.snappy
+E001.lime.snappy`
 
 Moving forward the uncompressed version will be used.
 
