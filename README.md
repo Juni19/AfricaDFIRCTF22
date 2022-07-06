@@ -177,11 +177,11 @@ which one of those maps' file it is.
 ![A picture containing text Description automatically
 generated](media/image19.png)
 
-It turned out to be the $142^nd$ mem map out of the 152 mem maps of the
+It turned out to be the 142nd mem map out of the 152 mem maps of the
 gnome-keyring-d process.
 
 Now I go back to the challenge VM and after dumping all its
-gnome-keyring-d's 152 memmaps to a directory, I cat the $142^nd$ in the
+gnome-keyring-d's 152 memmaps to a directory, I cat the 142nd in the
 list.
 
 ![](media/image20.png)
@@ -192,7 +192,7 @@ confidence](media/image21.png)
 ![Text Description automatically generated with medium
 confidence](media/image22.png)
 
-(The $142^nd$  highlighted)
+(The 142nd  highlighted)
 
 Now I cat the corresponding file using the start offset value
 
